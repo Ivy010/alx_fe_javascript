@@ -137,6 +137,7 @@ async function postQuoteToServer(quote) {
 async function syncQuotes() {
   const serverQuotes = await fetchQuotesFromServer();
   mergeQuotes(serverQuotes);
+  showNotification('Quotes synced with server!');  // Notify user of sync completion
 }
 
 // Merge quotes from server and resolve conflicts
