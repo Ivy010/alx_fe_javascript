@@ -128,7 +128,7 @@ async function postQuoteToServer(quote) {
     method: 'POST',
     body: JSON.stringify(quote),
     headers: {
-      'Content-type': 'application/json; charset=UTF-8',
+      'Content-Type': 'application/json',  // Correct "Content-Type" header
     },
   });
 }
@@ -177,6 +177,7 @@ window.onload = function() {
   createAddQuoteForm();  // Generate the form for adding quotes
   document.getElementById('newQuote').addEventListener('click', showRandomQuote); // Add event listener for "Show New Quote" button
 };
+
 
 
 
