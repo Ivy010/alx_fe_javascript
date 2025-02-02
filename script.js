@@ -1,18 +1,15 @@
-// Array of quote objects
 const quotes = [
     { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Inspiration" },
     { text: "Life is 10% what happens to us and 90% how we react to it.", category: "Motivation" },
     { text: "Success is not the key to happiness. Happiness is the key to success.", category: "Happiness" },
   ];
-  
-  // Function to display a random quote
+
   function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const quoteDisplay = document.getElementById('quoteDisplay');
     quoteDisplay.innerText = quotes[randomIndex].text;
   }
-  
-  // Function to add a new quote
+
   function addQuote() {
     const newQuoteText = document.getElementById('newQuoteText').value;
     const newQuoteCategory = document.getElementById('newQuoteCategory').value;
@@ -24,7 +21,6 @@ const quotes = [
       alert('Please enter both quote text and category.');
     }
   }
-  
-  // Event listener for the "Show New Quote" button
+
   document.getElementById('newQuote').addEventListener('click', showRandomQuote);
   
