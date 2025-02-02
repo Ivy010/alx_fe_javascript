@@ -113,6 +113,7 @@ window.onload = function() {
   populateCategories();
   loadLastViewedQuote();
   createAddQuoteForm();  // Generate the form for adding quotes
+   document.getElementById('newQuote').addEventListener('click', showRandomQuote); //Add event listener for "Show New Quote" button
 };
 
   
