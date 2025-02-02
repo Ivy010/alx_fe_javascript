@@ -133,6 +133,12 @@ async function postQuoteToServer(quote) {
   });
 }
 
+// Function to sync quotes with the server and resolve conflicts
+async function syncQuotes() {
+  const serverQuotes = await fetchQuotesFromServer();
+  mergeQuotes(serverQuotes);
+}
+
 // Merge quotes from server and resolve conflicts
 function mergeQuotes(serverQuotes) {
   const mergedQuotes = [...quotes];
@@ -165,10 +171,7 @@ function showNotification(message) {
 }
 
 // Periodically fetch quotes from server (every minute)
-setInterval(async () => {
-  const serverQuotes = await fetchQuotesFromServer();
-  mergeQuotes(serverQuotes);
-}, 60000); // 60000 milliseconds = 1 minute
+setInterval(syncQuotes, 60000); // 60000 milliseconds = 1 minute
 
 // Call createAddQuoteForm on page load
 window.onload = function() {
@@ -177,6 +180,7 @@ window.onload = function() {
   createAddQuoteForm();  // Generate the form for adding quotes
   document.getElementById('newQuote').addEventListener('click', showRandomQuote); // Add event listener for "Show New Quote" button
 };
+
 
 
 
