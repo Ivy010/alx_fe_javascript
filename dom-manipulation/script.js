@@ -87,8 +87,11 @@ function loadLastViewedQuote() {
 // Function to export quotes to JSON file
 function exportToJsonFile() {
   const dataStr = JSON.stringify(quotes);
-  const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+  const dataBlob = new Blob([dataStr], { type: 'application/json' });
+  const dataUri = URL.createObjectURL(dataBlob);
+
   const exportFileDefaultName = 'quotes.json';
+
   let linkElement = document.createElement('a');
   linkElement.setAttribute('href', dataUri);
   linkElement.setAttribute('download', exportFileDefaultName);
@@ -113,7 +116,8 @@ window.onload = function() {
   populateCategories();
   loadLastViewedQuote();
   createAddQuoteForm();  // Generate the form for adding quotes
-   document.getElementById('newQuote').addEventListener('click', showRandomQuote); //Add event listener for "Show New Quote" button
+  document.getElementById('newQuote').addEventListener('click', showRandomQuote); // Add event listener for "Show New Quote" button
 };
+
 
   
