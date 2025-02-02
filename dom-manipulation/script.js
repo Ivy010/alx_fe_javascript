@@ -1,3 +1,6 @@
+// URL to fetch quotes from JSONPlaceholder
+const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+
 // Array of quote objects
 let quotes = JSON.parse(localStorage.getItem('quotes')) || [
   { text: "The only limit to our realization of tomorrow is our doubts of today.", category: "Inspiration" },
@@ -112,6 +115,61 @@ function importFromJsonFile(event) {
   fileReader.readAsText(event.target.files[0]);
 }
 
+// Function to fetch quotes from the server
+async function fetchQuotesFromServer() {
+  const response = await fetch(apiUrl);
+  const serverQuotes = await response.json();
+  return serverQuotes.map(quote => ({ text: quote.body, category: 'Server' })); // Map data to match our quote structure
+}
+
+// Function to post new quotes to the server (simulated)
+async function postQuoteToServer(quote) {
+  await fetch(apiUrl, {
+    method: 'POST',
+    body: JSON.stringify(quote),
+    headers: {
+      'Content-type': 'application/json; charset=UTF-8',
+    },
+  });
+}
+
+// Merge quotes from server and resolve conflicts
+function mergeQuotes(serverQuotes) {
+  const mergedQuotes = [...quotes];
+  let conflictResolved = false;
+  
+  serverQuotes.forEach(serverQuote => {
+    const found = mergedQuotes.some(localQuote => localQuote.text === serverQuote.text);
+    if (!found) {
+      mergedQuotes.push(serverQuote);
+      conflictResolved = true;
+    }
+  });
+
+  if (conflictResolved) {
+    showNotification('Quotes synced with the server and conflicts resolved.');
+  }
+  
+  quotes = mergedQuotes;
+  localStorage.setItem('quotes', JSON.stringify(quotes));
+}
+
+// Show notification for conflict resolution
+function showNotification(message) {
+  const notification = document.getElementById('notification');
+  notification.innerHTML = `<strong>${message}</strong>`;
+  notification.style.display = 'block';
+  setTimeout(() => {
+    notification.style.display = 'none';
+  }, 5000); // Hide after 5 seconds
+}
+
+// Periodically fetch quotes from server (every minute)
+setInterval(async () => {
+  const serverQuotes = await fetchQuotesFromServer();
+  mergeQuotes(serverQuotes);
+}, 60000); // 60000 milliseconds = 1 minute
+
 // Call createAddQuoteForm on page load
 window.onload = function() {
   populateCategories();
@@ -119,6 +177,7 @@ window.onload = function() {
   createAddQuoteForm();  // Generate the form for adding quotes
   document.getElementById('newQuote').addEventListener('click', showRandomQuote); // Add event listener for "Show New Quote" button
 };
+
 
 
 
