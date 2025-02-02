@@ -37,10 +37,11 @@ function populateCategories() {
   let optionsHTML = '<option value="all">All Categories</option>';
   
   categories.forEach(category => {
-    optionsHTML += `<option value="${category}">${category}</option>`;
+    const option = document.createElement('option');
+    option.value = category;
+    option.textContent = category;  // Use textContent to set the category name
+    categoryFilter.appendChild(option);
   });
-  
-  categoryFilter.innerHTML = optionsHTML;
 }
 
 // Function to filter quotes based on selected category
@@ -118,6 +119,7 @@ window.onload = function() {
   createAddQuoteForm();  // Generate the form for adding quotes
   document.getElementById('newQuote').addEventListener('click', showRandomQuote); // Add event listener for "Show New Quote" button
 };
+
 
 
   
